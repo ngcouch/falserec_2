@@ -1,2 +1,4 @@
-var conditions = {1 : "rate",
-		  2 : "validate"}
+var conditions = {1 : "1",
+		  2 : "2",
+		  3 : "3",
+		  4 : "4"}

@@ -12,7 +12,19 @@ var trial = {
 
 var task_loop = {
     timeline: [trial],
-    timeline_variables: sentences,
+    timeline_variables: function() {
+
+	if (condition == 1 || condition == 3) {
+
+	    return list_1
+	}
+
+	else {
+
+	    return list_2
+	}
+	
+    },
     randomize_order: true
 }
 

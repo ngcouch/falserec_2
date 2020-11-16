@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+
+    <!-- Load in jsPsych modules-->
+    <script type="text/javascript" src="jsPsych/jspsych.js"></script>
+    <script type="text/javascript" src="jsPsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <script type="text/javascript" src="jsPsych/plugins/jspsych-html-button-response.js"></script>
+    <script type="text/javascript" src="jsPsych/plugins/jspsych-image-keyboard-response.js"></script>
+    <script type="text/javascript" src="jsPsych/plugins/jspsych-survey-text.js"></script>
+    <script type="text/javascript" src="jsPsych/plugins/jspsych-html-slider-response.js"></script>
+
+    <!-- Load in experiment specific information-->
+    <script type="text/javascript" src="experiment-data/conditions.js"></script>
+
+    <!-- Load in jquery and css-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="jsPsych/css/jspsych.css" rel="stylesheet" type="text/css"/>
+
+  </head>
+  <body>
+  </body>
+
+  <script>
+
+    // Get participant information and use it to derive their condition number.
+    var ID = window.prompt("Enter your participant ID:")
+    var unique_ID = jsPsych.randomization.randomID(6)
+
+    while (!Object.keys(conditions).includes(ID)) {
+
+	var ID = window.prompt("ID not found. Please check again, or contact the experimenter.")
+
+    }
+
+    var condition = conditions[ID] 
+    jsPsych.data.addProperties({PID: ID,
+				UID: unique_ID,
+				condition_num: condition})
+
+    //Initialize the timeline
+    var timeline = []
+
+
+    //Introduction and instructions
+    var intro = {
+	type: 'html-button-response',
+	stimulus:'<p>Welcome to the experiment! Please do not refresh the broswer or use the back button, as that will lose your progress in the experiment.</p>',
+	choices: ['Continue'],
+    };
+
+    var instruction_text = {'rate': '<p>In this study, you will read a set of sentences one at a time. For each sentence, please indicate how interesting you find the sentence on a 1 to 7 scale, where 1 means "Not at all interesting" and 7 means "Extremely interesting".</p>',
+			    'validate': '<p>In this study, you will read a set of sentences one at a time. For each sentence, please indicate how interesting you find the sentence on atrue the sentence is on a 1 to 7 scale, where 1 means "Definietly false" and 7 means "Definielty true".</p>'}
+    
+    var instructions = {
+	type : 'html-button-response',
+	stimulus : instruction_text[condition],
+	choices: ['Continue']
+
+    }
+
+    var sentences_lo
+
+    timeline.push(intro)
+    timeline.push(instructions)
+    
+    jsPsych.init({
+	timeline: timeline,
+	on_finish: function() {
+	    $.ajax({
+		type: "POST",
+		url: "/experiment-data",
+		data: jsPsych.data.get().json(),
+		contentType: "application/json"
+	    })
+		.done(function() {
+		    alert("Thank you! You may now close this window.")
+		})
+		.fail(function() {
+		    alert("A problem occurred while writing to the database. Please contact the researcher for more information.")
+		})
+	},
+	experiment_width: 800
+    })
+
+    </script>
+</html>

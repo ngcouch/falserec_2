@@ -1,0 +1,25 @@
+{
+  "name": "falserec_2",
+  "version": "1.0.0",
+  "description": "Second version of a recognition experiment with Nikita Salovich",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngcouch/falserec_2.git"
+  },
+  "author": "Nathan Couch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngcouch/falserec_2/issues"
+  },
+  "homepage": "https://github.com/ngcouch/falserec_2#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.3"
+  }
+}
